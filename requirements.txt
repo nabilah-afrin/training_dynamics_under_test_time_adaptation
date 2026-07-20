@@ -1,0 +1,10 @@
+torch
+torchvision
+numpy
+matplotlib
+pyyaml
+timm
+iopath
+git+https://github.com/facebookresearch/fvcore.git
+git+https://github.com/fra31/auto-attack.git@a39220048b3c9f2cca9a4d3a54604793c68eca7e#egg=auto-attack
+git+https://github.com/RobustBench/robustbench.git

@@ -1,0 +1,33 @@
+# ---- General ----
+device: cuda:0
+batch_size: 64
+tau: 1.0e-5
+layer_type: Conv2d          # which module type to hook (nn.Conv2d / nn.Linear / ...)
+
+# ---- Dataset ----
+# robustbench supports: cifar10, cifar100, imagenet
+dataset: cifar10
+data_dir: ./data
+n_examples: 10000
+corruptions: ['gaussian_noise']
+severities: [1, 2, 3, 4, 5]
+
+# ---- Model (robustbench) ----
+model:
+  name: Standard             # any model_name from robustbench.model_zoo
+  dataset: cifar10           # cifar10 | cifar100 | imagenet
+  threat_model: Linf         # Linf | L2 | corruptions | ...
+
+# ---- TTA method ----
+# none = base model only (no adaptation)
+method: tent
+method_kwargs:
+  lr: 1.0e-3
+
+# ---- Rank diagnosis ----
+metric: stable_rank          # stable_rank | eigen_value
+
+# ---- Scenarios ----
+# Options: clean_base, noisy_base, clean_tta, noisy_tta
+# Use 'all' or a subset list.
+scenarios: all
