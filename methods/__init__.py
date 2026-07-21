@@ -1,12 +1,13 @@
 import torch.nn as nn
 from .base import BaseTTA
 from .tent import TentTTA
+from .cotta import CottaTTA
 
 # Universal registry for all methods
 METHODS = {
     'none': BaseTTA,
     'tent': TentTTA,
-    # 'cotta': CottaTTA,  <-- You will add this here later
+    'cotta': CottaTTA,
 }
 
 def build_method(cfg, base_model: nn.Module):
