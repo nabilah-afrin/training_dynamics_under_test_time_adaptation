@@ -9,7 +9,7 @@ from utils.scenarios import resolve_scenarios
 from data.dataloader import get_clean_loader, get_noisy_loader
 from models.model_loader import get_base_model
 from methods import build_method
-from metrics import METRIC_MODULES
+from metrics import METRICS_MODULES
 
 def _inner(m):
     return m.model if hasattr(m, 'model') else m

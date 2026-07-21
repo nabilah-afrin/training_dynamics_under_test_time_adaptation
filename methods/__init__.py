@@ -15,4 +15,6 @@ def build_method(cfg, base_model: nn.Module):
     kwargs = getattr(cfg, 'method_kwargs', {}) or {}
     
     # Pass the base model and config kwargs to the selected method class
-    return cls(base_model, **kwargs)
+    
+    kwargs_dict = vars(kwargs) if not isinstance(kwargs, dict) else kwargs
+    return cls(base_model, **kwargs_dict)
