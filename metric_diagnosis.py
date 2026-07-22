@@ -33,7 +33,7 @@ def _run_one(metric_mod, predict_fn, hook_model, loader, layer_names, device, is
 def main(cfg_path):
     cfg = load_config(cfg_path)
     device = torch.device(cfg.device)
-    metric_mod = METRIC_MODULES[cfg.metric]
+    metric_mod = METRICS_MODULES[cfg.metric]
     scenarios = resolve_scenarios(cfg)
     out_dir = f"results/rank_{cfg.dataset}_{cfg.model.name}_{cfg.method}_{cfg.metric}"
     os.makedirs(out_dir, exist_ok=True)
