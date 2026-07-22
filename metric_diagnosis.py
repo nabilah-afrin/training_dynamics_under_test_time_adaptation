@@ -41,8 +41,10 @@ def main(cfg_path):
     tmp = get_base_model(cfg).to(device)
     layer_names = get_layer_names(tmp, cfg.layer_type)
     del tmp; torch.cuda.empty_cache()
-
+    print('clean loader')
     clean_loader = get_clean_loader(cfg)
+
+    print('noisy loaders')
     noisy_loaders = {sev: get_noisy_loader(cfg, sev) for sev in cfg.severities}
 
     if 'clean_base' in scenarios:
@@ -57,7 +59,7 @@ def main(cfg_path):
         m = get_base_model(cfg).to(device)
         for sev in cfg.severities:
             avg = _run_one(metric_mod, m, m, noisy_loaders[sev], layer_names, device, is_adapt=False)
-            np.save(f"{out_dir}/noisy_base_sev{sev}.npy", avg)
+            np.save(f"{out_dir}/noisy_base_{cfg.dataset}_sev{sev}.npy", avg)
         del m; torch.cuda.empty_cache()
 
     if 'clean_tta' in scenarios:
@@ -65,7 +67,7 @@ def main(cfg_path):
         base = get_base_model(cfg).to(device)
         method = build_method(cfg, base).to(device)
         avg = _run_one(metric_mod, method, _inner(method), clean_loader, layer_names, device, is_adapt=True)
-        np.save(f"{out_dir}/clean_tta.npy", avg)
+        np.save(f"{out_dir}/clean_{cfg.dataset}_{cfg.method}.npy", avg)
         del method, base; torch.cuda.empty_cache()
 
     if 'noisy_tta' in scenarios:
@@ -74,7 +76,7 @@ def main(cfg_path):
             base = get_base_model(cfg).to(device)
             method = build_method(cfg, base).to(device)
             avg = _run_one(metric_mod, method, _inner(method), noisy_loaders[sev], layer_names, device, is_adapt=True)
-            np.save(f"{out_dir}/noisy_tta_sev{sev}.npy", avg)
+            np.save(f"{out_dir}/noisy_{cfg.dataset}_{cfg.method}_sev{sev}.npy", avg)
             del method, base; torch.cuda.empty_cache()
 
     print(f"Done. Results -> {out_dir}")
